@@ -20,13 +20,12 @@
     "test:w": "NODE_ENV=test mocha -w",
     "coverage": "npm run test && nyc report --reporter=html",
     "open:coverage": "open ./coverage/index.html -a \"Google Chrome\"",
-    "publish:patch":"npm run test && npm-publish patch"
+    "publish:patch": "npm run test && npm-publish patch"
   },
   "devDependencies": {
     "code": "^5.1.2",
     "istanbul": "^0.4.5",
     "mocha": "^4.0.1",
-    "npm-publish": "^0.4.7",
     "nyc": "^11.3.0"
   }
 }
