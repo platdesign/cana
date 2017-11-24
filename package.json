@@ -14,7 +14,7 @@
     "engine.io-client": "^3.1.4",
     "rx": "^4.1.0"
   },
-  "repository": "",
+  "repository": "https://github.com/platdesign/cana.git",
   "scripts": {
     "test": "NODE_ENV=test nyc mocha",
     "test:w": "NODE_ENV=test mocha -w",
