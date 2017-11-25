@@ -6,18 +6,20 @@ const engine = require('engine.io-client');
 
 
 
-function socket$(uri) {
+function socket$(uri, options) {
 	return Observable.create(observer => {
 
-		let socket = engine(uri);
+		let socket = engine(uri, options);
 
 		socket.rx$ = Observable.fromEvent(socket, 'message', e => JSON.parse(e));
 
 		socket.on('open', () => observer.onNext(socket));
 		socket.on('close', type => {
+
 			observer.onNext(false);
-			if(type === 'transport close') {
-				observer.onError(new Error('asd'));
+
+			if(type === 'transport close' || type === 'transport error') {
+				observer.onError(new Error('transport error'));
 			}
 		});
 
@@ -49,8 +51,12 @@ class Client {
 	 */
 	constructor(uri) {
 
+		let socketOptions = {
+			path: '/cana'
+		};
+
 		// Create socket observable
-		this.socket$ = socket$(uri);
+		this.socket$ = socket$(uri, socketOptions);
 
 		this.socket = false;
 		this.socket$.subscribe(socket => this.socket = socket);
@@ -182,7 +188,8 @@ class Client {
 
 			})
 
-		});
+		})
+		.share();
 
 	}
 

@@ -16,7 +16,7 @@ class Server {
 	 * @param  {Object} httpServer
 	 * @return {self}
 	 */
-	constructor(httpServer) {
+	constructor(httpServer, options = {}) {
 
 		this._topics = {};
 		this._methods = {};
@@ -24,7 +24,11 @@ class Server {
 
 		/* istanbul ignore else */
 		if(httpServer) {
-			this._listener = engine(httpServer);
+			this._listener = engine();
+			this._listener.attach(httpServer, {
+				path: options.path || '/cana'
+			});
+
 			this._listener.on('connection', socket => {
 				let con = new Connection(this, socket);
 				socket.on('close', () => con.close());
