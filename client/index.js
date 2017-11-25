@@ -59,7 +59,7 @@ class Client {
 		this.socket$ = socket$(uri, socketOptions);
 
 		this.socket = false;
-		this.socket$.subscribe(socket => this.socket = socket);
+		this._socketSub = this.socket$.subscribe(socket => this.socket = socket);
 
 		// input observable
 		this._tx$ = this.socket$.filter(Boolean).switchMap(socket => socket.rx$);
@@ -90,6 +90,7 @@ class Client {
 		if(this.socket) {
 			this.socket.close();
 		}
+		this._socketSub.dispose();
 	}
 
 
